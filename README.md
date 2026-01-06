@@ -26,8 +26,6 @@ The AptlyWeb server sits between the user and the aptly server.
 
 ## Installation
 
-**TODO**: use image hosted on github registry
-
 > [!important]
 > The Aptly server must be at least version 1.5.0
 
@@ -37,7 +35,7 @@ The AptlyWeb server sits between the user and the aptly server.
 ```yml
 services:
   aptlyweb:
-    image: aptlyweb # TODO
+    image: ghcr.io/e-bs-kumkeo/aptlyweb:latest
     env_file:
       - .env
     volumes:
