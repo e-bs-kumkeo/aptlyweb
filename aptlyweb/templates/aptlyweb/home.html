@@ -1,0 +1,97 @@
+{% extends  'aptlyweb/template_display.html' %}
+{% load static %}
+{% load aptly_extras %}
+<!DOCTYPE html>
+
+{% block title %} Overview · APTLYWEB {% endblock %}
+{% block extra_head %} {% endblock %}
+
+{% block startpage %}    
+    <section class="page-intro">
+    </section>
+{% endblock %}
+
+{% block h1 %} APTLYWEB OVERVIEW {% endblock %}
+
+{% block display%}
+    <div class="overview">
+         <div>
+            <h5>
+                <i>database</i>
+                Published APT Repos
+            </h5>
+            <div class="display">
+                <ul class="list border">
+                    {% for endpoint in endpoints|slice:":10" %}
+                    {% with escaped_prefix=endpoint.prefix|escape_prefix %}
+                    <li>
+                        <a href="{% url 'published_detail' prefix=escaped_prefix distribution=endpoint.distribution %}">
+                            <span>{{ url }}/<strong>{{ endpoint.prefix }}</strong></span> <strong>{{ endpoint.distribution }}</strong>
+                        </a>
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <br>
+            <div class="more-row">
+                <a class="link bold" href="{% url 'published' %}">
+                    view all › ({{ endpoints|length }})
+                </a>
+            </div>
+        </div>
+        <hr class="large" />
+        <div>
+            <h5>
+                <i>folder</i>
+                Repositories
+            </h5>
+            <div class="display">
+                <ul class="list border">
+                    {% for repo in repositories|slice:":10" %}
+                    <li>
+                        <a href="{% url 'repository_detail' repo.name %}">
+                            <strong>{{ repo.name }}</strong>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <br>
+            <div class="more-row">
+                <a class="link bold" href="{% url 'repositories' %}">
+                    view all › ({{ repositories|length }})
+                </a>
+            </div>
+        </div>
+        <hr class="large" />
+        <div>
+            <h5>
+                <i>photo_camera</i>
+                Snapshots
+            </h5>
+            <div class="display">
+                <ul class="list border">
+                    {% for snap in snapshots|slice:":10" %}
+                    <li>                
+                        <a href="{% url 'snapshot_detail' snap.name %}">
+                            <strong>{{ snap.name }}</strong> 
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul> 
+            </div>
+            <br>
+            <div class="more-row">
+                <a class="link bold" href="{% url 'snapshots' %}">
+                    view all › ({{ snapshots|length }})
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock%}
+
+{% block endpage %}    
+    <section class="page-outro">
+    </section>
+{% endblock %}

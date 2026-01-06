@@ -1,0 +1,14 @@
+{% load widget_tweaks %}
+<div class="field border label {% if field.errors %}invalid prefix{% endif %}">
+  {% if field.errors %}<i>error</i>{% endif %}
+  {% render_field field  %}
+  <label for="field.auto_id">{{field.label}}</label> 
+  {% if field.help_text and not field.errors %}
+  <span class="helper">{{ field.help_text }}</span>
+  {% endif %}
+  {% for error in field.errors %}
+    <span class="error">
+      {{ error }}
+    </span>
+  {% endfor %}
+</div>

@@ -1,0 +1,21 @@
+{% extends  'aptlyweb/template_base_material.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+
+<title>{% block title %}ERROR{% endblock %}</title>
+{% block extra_head %}{% endblock %}
+
+{% block main-content %}
+<body class="pattern-circle">
+    <br><br><br>
+    <h1>
+        {% block heading %}
+        error blöd gelaufen...
+        {% endblock %}
+    </h1>
+    <h3>
+        {% block message %}{% endblock %}
+    </h3> 
+</body>
+{% endblock %}

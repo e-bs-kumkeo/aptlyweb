@@ -1,0 +1,112 @@
+{% extends  'aptlyweb/template_display.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %} Repositories · APTLYWEB {% endblock %}
+{% block extra_head %} {% endblock %}
+
+{% block h1 %} REPOSITORIES {% endblock %}
+{% block h2 %} {% endblock %}
+
+{% block display%}
+<div class="topic">
+  <div class="display"> 
+    <div class="operations">
+        {% if perms.aptlyweb.can_create_repos %} <a href="{% url 'repository_add' %}" class="button" title="create repository"><i>add</i>Create<i>folder</i></a>{% endif %}
+    </div>
+    <br>
+    <table class="border">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Distribution</th>
+          <th scope="col">Component</th>
+          <th scope="col">Comment</th>
+          {% if perms.aptlyweb.can_delete_repos or perms.aptlyweb.can_edit_repos %}
+          <th scope="col" style="width: 132px;"></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for repo in repositories %}
+        <tr>
+          <td>
+            <a href="{% url 'repository_detail' repo.name %}" class="link bold">{{ repo.name }}</a>
+          </td>
+          <td>{{ repo.default_distribution }}</td>
+          <td>{{ repo.default_component }}</td>
+          <td>{{ repo.comment }}</td>
+          {% if perms.aptlyweb.can_delete_repos or perms.aptlyweb.can_edit_repos %}
+          <td style="text-align: right;">
+            {% if perms.aptlyweb.can_edit_repos %}
+            <a class="button circle transparent" href="{% url 'repository_edit' repository_name=repo.name %}" title="edit"><i>edit</i></a>
+            {% endif %}
+            {% if perms.aptlyweb.can_delete_repos %}
+            <button type="button" class="circle transparent" onclick="openDeleteModal('{{ repo.name }}')" title="delete"><i>delete</i></button>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<dialog id="deleteModal" class="modal" popover>
+  <h5>Delete Repository</h5>
+  <div style="margin-top: 16px;">
+    <div>
+      Confirm deletion of the <span id="span_name" style="font-weight: bold;">placeholder</span> repository
+    </div>
+    <form id="deleteModalForm" method="post" action="{% url 'repository_delete' %}" onsubmit="deleteFormSubmit(event)">
+      {% csrf_token %}
+
+      <input id="repository_name" name="repository_name" type="hidden">
+
+      <div class="field border label">
+        <input id="confirmation_name" name="confirmation_name" type="text">
+        <label for="confirmation_name">Type name again to confirm</label>
+      </div>
+
+      <nav class="right-align">
+        <button type="button" onclick="closeDeleteModal()">Cancel</button>
+        <button id="deleteSubmit" type="submit" class="error">Delete</button>
+      </nav>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  const modal = document.getElementById('deleteModal');
+
+  function openDeleteModal(name){
+    modal.showPopover();
+
+    const name_input = document.getElementById('repository_name');
+    name_input.value = name;
+    const span_name = document.getElementById('span_name');
+    span_name.innerText = name;
+  }
+  function closeDeleteModal(){
+    modal.hidePopover();
+  }
+
+  // const form = document.getElementById('deleteModalForm');
+  function deleteFormSubmit(e){
+    const name_input = document.getElementById('repository_name');
+    const confirm_input = document.getElementById('confirmation_name');
+
+    if(name_input.value === confirm_input.value)
+    {
+      confirm_input.parentNode.classList.remove("invalid");
+      return true
+    }
+    else {
+      confirm_input.parentNode.classList.add("invalid");
+      // do not handle event
+      e.preventDefault();
+    }
+  }
+</script>
+{% endblock%}

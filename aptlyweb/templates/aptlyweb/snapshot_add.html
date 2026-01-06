@@ -1,0 +1,23 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %}ADD · APTLYWEB{% endblock %}
+{% block h1 %} ADD Snapshot {% endblock %}
+{% block overview-tables %}{% endblock %}
+{% block display%}
+<div class="login-overview">
+  <div class="topic">
+    <strong>Create a new Snapshot</strong>
+    <br>
+    <form id="snap_form" action="" method="POST" novalidate>
+      {% csrf_token %}
+      {% include 'aptlyweb/material_forms/form.html' with form=form %}
+      <nav class="right-align">
+        <a class="button" href="{% url 'snapshots' %}">Cancel</a>
+        <button type="submit">Submit</button>
+      </nav>
+    </form>
+  </div>
+</div>
+{% endblock %}

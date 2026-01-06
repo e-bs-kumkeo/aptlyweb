@@ -1,0 +1,48 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+{% load aptly_extras %}
+
+{% block title %}UPDATE · APTLYWEB{% endblock %}
+{% block h1 %} UPDATE Repository {% endblock %}
+{% block overview-tables %}{% endblock %}
+{% block display%}
+{% with escaped_prefix=endpoint.prefix|escape_prefix %}
+<div class="login-overview">
+  <div class="topic">
+    <strong>
+      Update publised APT Repository
+      <span class="italic">
+        {{ endpoint.prefix }}/{{ endpoint.distribution }}
+      </span>
+    </strong>
+    {% if endpoint.source_kind == "local" %}
+    <form id="update_form" action="" method="POST" novalidate>
+      {% csrf_token %}
+      {% include 'aptlyweb/material_forms/form.html' with form=form %} 
+      {% include 'aptlyweb/material_forms/signing.html' with form=signing_form %}
+      <br>
+      <nav class="right-align">
+        <a class="button" href="{% url 'published_detail' prefix=escaped_prefix distribution=endpoint.distribution %}">Cancel</a>
+        <button type="submit">Submit</button>
+      </nav>
+    </form>
+    {% else %}
+    <h3>Currently not supported on published snapshots</h3>
+    <nav class="right-align">
+        <a class="button" href="{% url 'published_detail' prefix=escaped_prefix distribution=endpoint.distribution %}">Cancel</a>
+      </nav>
+    {% endif %}
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.matches('input[name="repository_name"]')) {
+    const label = document.getElementById('repo-selected-label');
+    if (label) label.textContent = ': ' + e.target.value;
+  }
+});
+</script>
+{% endwith %}
+{% endblock %}

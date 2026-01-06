@@ -1,0 +1,61 @@
+{% extends  'aptlyweb/template_detail.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %} Detail · {{ endpoint.prefix }}/{{ endpoint.distribution }} {% endblock %}
+
+{% block h1 %} 
+<h5 class="max center-align">{{ endpoint.prefix }}/{{ endpoint.distribution }}</h5> 
+{% endblock %}
+
+{% block specific-detail %}
+<p><strong>Prefix:</strong> {{ endpoint.prefix }}</p>
+<p><strong>Distribution:</strong> {{ endpoint.distribution }}</p>
+<p><strong>Component:</strong> {% for src in endpoint.sources %}{{ src.Component }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+<p><strong>Architectures:</strong> {% for arch in endpoint.architectures %}{{ arch }}{% if not forloop.last %}, {% endif %}{% empty %}{% endfor %} </p>
+
+<p><button class="circle transparent" onclick="blockToClipboard('debOneline')"><i>content_copy</i></button><strong>One-line APT Source:</strong></p> 
+<div class="field textarea border min fill">
+    <textarea id="debOneline" rows="1" readonly>{{ debOneline }}</textarea>
+</div>
+<p><button class="circle transparent" onclick="blockToClipboard('deb822')"><i>content_copy</i></button><strong>DEB822 (since Trixie):</strong></p> 
+<div class="field textarea border min fill">
+    <textarea id="deb822" rows="5" readonly>{{ deb822 }}</textarea>
+</div>
+    
+{% endblock %}
+{% block source-info %}
+<br>
+<div class="source-info">
+(from:{% for src in endpoint.sources %}    
+        {% if endpoint.source_kind == "local" or endpoint.source_kind == "repository" %}
+            <a class="link" href="{% url 'repository_detail' src.Name %}" class="button">
+                Repository "{{ src.Name }}"
+            </a>
+        {% endif %}
+        {% if endpoint.source_kind == "snapshot" %}
+            <a class="link" href="{% url 'snapshot_detail' src.Name %}" class="button">
+                Snapshot "{{ src.Name }}"
+            </a>
+        {% endif %}
+        {% if not forloop.last %},{% endif %}
+    {% endfor %})
+</div> 
+<div class="snackbar" id="snackbar">
+  <span>Copied to clipboard</span>
+</div>
+<script>
+function blockToClipboard(id){
+    const block = document.getElementById(id);
+    ui("#snackbar", 2000); // custom timeout of 3000 milliseconds
+    block.focus()
+    block.select()
+
+    navigator.clipboard.writeText(block.value)
+}
+</script>
+
+{%endblock%} 
+
+
+{% block show-packages %}{% endblock %}

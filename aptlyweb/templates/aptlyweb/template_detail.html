@@ -1,0 +1,103 @@
+{% extends  'aptlyweb/template_base_material.html' %}
+{% load static %}
+{% load aptly_extras %}
+<!DOCTYPE html>
+
+{% block title %}
+    Detail · APTLYWEB
+{% endblock %}
+
+{% block main-content %}
+    <nav>
+        <a class="button circle transparent extra" href=".."><i>arrow_back</i></a>
+        {% block h1 %}{% endblock %}
+    </nav>
+    {% block startpage %}          
+    {% include 'aptlyweb/messages.html' %}
+    {% endblock %}
+    <section class="detail">
+        <div class="details">
+            {% block specific-detail %}
+                <h2>Detail:</h2>
+            {% endblock %}
+        </div>
+        {% block show-packages %}
+            <div class="packages" role="region" aria-label="Package list">
+                <h2>Package List:</h2>
+                {% if packages %}
+                <table class="border">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Architecture</th>
+                            <th>Version</th>
+                            <th>Hash</th>
+                            {% if perms.aptlyweb.can_remove_repos and repository %}
+                            <th scope="col" style="width: 62px;">Action</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for package in packages %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'package_detail' package.key %}" class="link">{{ package.name }}</a>
+                            </td>
+                            <td>{{ package.arch }}</td>
+                            <td>{{ package.version }}</td>
+                            <td>{{ package.files_hash }}</td>
+                            {% if perms.aptlyweb.can_remove_repos and repository %}
+                            <td>
+                                <button type="button" class="circle transparent" onclick="openDeleteModal('{{ package.key }}')" title="delete"><i>delete</i></button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <p>No packages found in this repository.</p>
+                {% endif %}
+            </div>
+        {% endblock %}
+    </section>
+    {% if repository %}
+    <dialog id="deleteModal" class="modal" popover>
+        <h5>Delete Package</h5>
+        <div style="margin-top: 16px;">
+            <div>
+            Do you really want to delete the <span id="span_name" style="font-weight: bold;">placeholder</span> package? <br>
+            This action is irreversible!
+            </div>
+            <form id="deleteModalForm" method="post" action="{% url 'repository_remove' repository_name=repository.name %}">
+            {% csrf_token %}
+            <input id="package_key" name="package_key" type="hidden">
+            <nav class="right-align">
+                <button type="button" onclick="closeDeleteModal()">Cancel</button>
+                <button class="error" id="deleteSubmit" type="submit">Delete</button>
+            </nav>
+            </form>
+        </div>
+    </dialog>
+    {% endif %}
+    {% block source-info %}
+{% endblock %}
+
+<script>
+const modal = document.getElementById('deleteModal');
+
+function openDeleteModal(key){
+  modal.showPopover();
+
+  const key_input = document.getElementById('package_key');
+  key_input.value = key;
+  const span_name = document.getElementById('span_name');
+  span_name.innerText = key;
+}
+function closeDeleteModal(){
+  modal.hidePopover();
+}
+</script>
+{% endblock %}
+
+

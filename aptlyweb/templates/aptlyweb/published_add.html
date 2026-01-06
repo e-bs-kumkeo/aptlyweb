@@ -1,0 +1,24 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+
+{% block title %}PUBLISH · APTLYWEB{% endblock %}
+{% block h1 %} Publish {% if source_kind == "snapshot" %}Snapshot{% else %}Local Repository{% endif %}{% endblock %}
+{% block overview-tables %}{% endblock %}
+{% block display%}
+<div class="topic">
+
+
+  <form id="publish_repo_form" action="" method="POST" novalidate>
+    {% csrf_token %}
+    {% include 'aptlyweb/material_forms/form.html' with form=form %}
+    {% include 'aptlyweb/material_forms/signing.html' with form=signing_form %}
+    <br>
+    {% include 'aptlyweb/material_forms/source_components.html' with formset=source_formset source_kind=source_kind%}
+    <br>
+    <nav class="right-align">
+      <a class="button" href="{% url 'published' %}">Cancel</a>
+      <button type="submit">Submit</button>
+    </nav>
+  </form>
+</div>  
+{% endblock %}

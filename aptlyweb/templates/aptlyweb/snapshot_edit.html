@@ -1,0 +1,25 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+
+{% block title %}EDIT SNAPSHOT · APTLYWEB{% endblock %}
+{% block h1 %} EDIT · Snapshot {% endblock %}
+{% block overview-tables %}{% endblock %}
+{% block display%}
+<div class="login-overview">
+  <!-- Linke Spalte: Formular -->
+  <div class="topic">
+    <strong>
+        Edit Snapshot <span class="italic">{{ snap.name }}</span>
+    </strong>
+    <br>
+    <form id="snap_form" action="" method="POST" novalidate>
+      {% csrf_token %}
+      {% include 'aptlyweb/material_forms/form.html' with form=form %}
+      <nav class="right-align">
+        <a class="button" href="{% url 'snapshot_detail' snapshot_name=snap.name %}">Cancel</a>
+        <button type="submit">Submit</button>
+      </nav>
+    </form>
+  </div>
+</div>
+{% endblock %}

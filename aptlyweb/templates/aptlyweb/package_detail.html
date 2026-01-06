@@ -1,0 +1,21 @@
+{% extends  'aptlyweb/template_display.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %} Detail · {{ pkg.fields.Package }} {% endblock %}
+
+{% block h1 %} {{ pkg.fields.Package }} {% endblock %}
+
+{% block display %}
+<p><strong>Description:</strong> {{ pkg.fields.Description }}</p>
+<p><strong>Homepage:</strong> {{ pkg.fields.Homepage }}</p>
+<p><strong>Maintainer:</strong> {{ pkg.fields.Maintainer }}</p>
+<p><strong>Version:</strong> {{ pkg.fields.Version }}</p>
+<p><strong>Architecture:</strong> {{ pkg.fields.Architecture }}</p>
+<p><strong>Provides:</strong> {{ pkg.fields.Provides }}</p>
+<p><strong>Depends on:</strong> {{ pkg.fields.Depends }}</p>
+{% endblock %}
+{% block source-info %}
+{%endblock%} 
+
+{% block show-packages %}{% endblock %}

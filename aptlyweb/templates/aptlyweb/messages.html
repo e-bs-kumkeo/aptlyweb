@@ -1,0 +1,23 @@
+{% if messages %} 
+{% for message in messages|slice:":1" %} 
+    {% if message.tags == "error" %}
+        <div id="snackbar" class="snackbar error">
+        <i>error</i>
+        <span>{{ message }}</span>
+        </div>
+    {% elif message.tags == "success" %}
+        <div id="snackbar" class="snackbar green">
+        <i>done</i>
+        <span>{{ message }}</span>
+        </div>
+    {% else %}
+        <div id="snackbar" class="snackbar">{{ message }}</div>
+    {% endif %}
+{% endfor %}
+<script>
+// hack to show toast on load and make it clickable
+document.addEventListener('DOMContentLoaded', function() {
+    ui("#snackbar", -1);
+});
+</script>
+{% endif %}

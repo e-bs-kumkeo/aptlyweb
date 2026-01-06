@@ -1,0 +1,13 @@
+services:
+  aptlyweb:
+    image: aptlyweb
+    env_file:
+      - .env
+    volumes:
+      - ./data:/opt/aptlyweb/data
+    # required when Aptly runs directly on host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # app is hosted on port 8001
+    ports:
+      - 8001:8001

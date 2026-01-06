@@ -1,0 +1,30 @@
+<nav>
+  <label class="radio">
+    <input type="radio" name="sign_skip" value="true" {%if form.sign_skip.value%}checked{%endif%} onclick="handle_skip(true)">
+    <span>Skip Signing</span>
+  </label>
+  <label class="radio">
+    <input type="radio" name="sign_skip" value="false" {%if not form.sign_skip.value%}checked{%endif%} onclick="handle_skip(false)">
+    <span>Sign Repository</span>
+  </label>
+</nav>
+<fieldset id="signing_options" {% if form.sign_skip.value %}disabled{% endif %}>
+    <legend>Signing Options</legend>
+    {% if form.non_field_errors %}
+    <ui class="list border">
+      {% for error in form.non_field_errors %}
+        <li class="error"><i>error</i>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% include 'aptlyweb/material_forms/field.html' with field=form.gpg_key %}
+    {% include 'aptlyweb/material_forms/field.html' with field=form.gpg_keyring %}
+    {% include 'aptlyweb/material_forms/field.html' with field=form.passphrase %}
+    {% include 'aptlyweb/material_forms/field.html' with field=form.passphrase_file %}
+</fieldset>
+<script>
+const fields = document.getElementById("signing_options")
+function handle_skip(value){
+    fields.disabled = value;
+}
+</script>

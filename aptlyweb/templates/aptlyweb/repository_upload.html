@@ -1,0 +1,50 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+
+{% block title %}Upload · APTLYWEB{% endblock %}
+{% block h1 %} Upload Package {% endblock %}
+{% block overview-tables %}{% endblock %}
+{% block display%}
+<div class="login-overview">
+  <div class="topic">
+    <strong>
+        Upload To Repository
+        <span class="italic">
+           {{ repo.name }}
+        </span>
+    </strong>
+    <br>
+
+    <form id="upload_form" action="" method="POST" novalidate enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <label class="checkbox">
+        <input type="checkbox" id="force_replace" name="force_replace">
+        <span>Force Replace</span>
+      </label>
+
+      <div class="field label prefix border">
+        <i>attach_file</i>
+        <input type="file" accept=".deb" name="debfile">
+        <input type="text">
+        <label>File</label>
+      </div>
+      <br>
+      <nav class="right-align">
+        <a class="button" href="{% url 'repository_detail' repo.name %}">Cancel</a>
+        <button type="submit">Submit</button>
+      </nav>
+    </form>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.matches('input[name="repository_name"]')) {
+    const label = document.getElementById('repo-selected-label');
+    if (label) label.textContent = ': ' + e.target.value;
+  }
+});
+</script>
+{% endblock %}

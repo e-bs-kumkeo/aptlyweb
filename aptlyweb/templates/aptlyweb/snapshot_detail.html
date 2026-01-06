@@ -1,0 +1,19 @@
+{% extends  'aptlyweb/template_detail.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %} Detail · {{ snapshot.name }} {% endblock %}
+
+{% block h1 %} 
+<h5 class="max center-align">Snapshot - {{snapshot.name}} </h5> 
+{% if perms.aptlyweb.can_edit_snapshots %}
+<a class="button extra transparent" href="{% url 'snapshot_edit' snapshot_name=snapshot.name %}"><i>edit</i>Edit</a>
+{% endif %}
+{% endblock %}
+
+{% block specific-detail %}
+    
+    <p><strong>Name:</strong> {{ snapshot.name }}</p>
+    <p><strong>Description:</strong> {{ snapshot.description }}</p>
+    <p><strong>Created at:</strong> {{ snapshot.created_at }}</p>
+{% endblock %}

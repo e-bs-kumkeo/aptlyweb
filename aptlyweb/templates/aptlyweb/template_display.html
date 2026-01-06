@@ -1,0 +1,24 @@
+{% extends  'aptlyweb/template_base_material.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block main-content %}
+    <h1>
+        {% block h1 %}{% endblock %}
+    </h1>
+    {% block startpage %}          
+    {% include 'aptlyweb/messages.html' %}
+    {% endblock %}
+    <section class="display">
+        <h2>
+        {% block h2 %}{% endblock %}
+        </h2>
+    {% block display %}{% endblock %}
+    </section>
+    {% block endpage %}
+    {% endblock %}
+{% endblock %}
+{% block scripts %}{% endblock %}
+
+
+

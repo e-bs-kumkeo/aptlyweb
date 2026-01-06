@@ -1,0 +1,36 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0" version="29.2.4">
+  <diagram name="Seite-1" id="cTiTJpKNqIYuyeWJMUx_">
+    <mxGraphModel dx="736" dy="394" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-1" parent="1" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.database_server" value="Aptly" vertex="1">
+          <mxGeometry height="50" width="38" x="560" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-3" parent="1" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.client_application" value="Client(s) via browser" vertex="1">
+          <mxGeometry height="32" width="50" x="310" y="273" as="geometry" />
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-5" edge="1" parent="1" source="Hg0Ofms8DbH2ZLddYbGt-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="Hg0Ofms8DbH2ZLddYbGt-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-6" connectable="0" parent="Hg0Ofms8DbH2ZLddYbGt-5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="REST API" vertex="1">
+          <mxGeometry relative="1" x="-0.0496" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-4" parent="1" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.server_generic" value="AptlyWeb" vertex="1">
+          <mxGeometry height="50" width="24" x="440" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-7" parent="1" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.client_application" value="" vertex="1">
+          <mxGeometry height="32" width="50" x="310" y="345" as="geometry" />
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-9" edge="1" parent="1" source="Hg0Ofms8DbH2ZLddYbGt-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.92;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="Hg0Ofms8DbH2ZLddYbGt-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hg0Ofms8DbH2ZLddYbGt-11" edge="1" parent="1" source="Hg0Ofms8DbH2ZLddYbGt-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.92;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="Hg0Ofms8DbH2ZLddYbGt-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

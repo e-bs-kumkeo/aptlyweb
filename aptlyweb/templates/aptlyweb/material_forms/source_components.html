@@ -1,0 +1,51 @@
+{% load aptly_extras %}
+{% load widget_tweaks %}
+
+<div id="source-list">
+    {{ formset.management_form }}
+    <strong>{% if source_kind == "snapshot" %}Snapshot{% else %}Repository{% endif %} list</strong>
+    {% if formset  %}
+    {% if formset.non_form_errors  %}
+    <ui class="list border">
+    {% for error in formset.non_form_errors  %}
+        <li class="error"><i>error</i>{{ error }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <table class="border">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Component</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for src in formset %}
+        <tr>
+        <td>
+            <label class="checkbox">
+                {% render_field src.enabled %}
+                <span></span>
+            </label>
+        </td>
+        <td>
+            {% render_field src.name|attr:"type:hidden" %}
+            <p>{{ src.name.value }}</p>
+        </td>
+        <td>
+            <div class="field border label{% if src.component.errors %} invalid prefix{% endif %}">
+                {% if src.component.errors %}<i>error</i>{% endif %}
+                {% render_field src.component %}
+                <label for="{{ src.component.auto_id }}">Component</label>
+            </div>
+        </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    {% else %}
+    <div class="info-txt">No {% if source_kind == "snapshot" %}Snapshot{% else %}Repository{% endif %} found</div>
+    {% endif %}
+</div>

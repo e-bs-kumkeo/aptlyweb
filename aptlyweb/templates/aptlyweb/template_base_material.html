@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <title>{% block title %}APTLYWEB{% endblock %}</title>
+    {% comment %}
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.12.11/dist/cdn/beer.min.css" rel="stylesheet" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.12.11/dist/cdn/beer.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    {% endcomment %}
+    <link href="{% static 'beercss/beer.min.css' %}" rel="stylesheet" />
+    <script type="module" src="{% static 'beercss/beer.min.js' %}"></script>
+    <script type="module" src="{% static 'beercss/material-dynamic-colors.min.js' %}"></script>
+
+    <link rel="shortcut icon" href="{% static 'aptlyweb/images/favicon.ico' %}" />
+    <style>
+    .logo {
+        mask: url("{% static 'aptlyweb/images/UI_Logo.svg' %}") no-repeat center;
+        background-color: var(--primary);
+        height: 43px; 
+        width: 43px;
+    }
+    </style>
+</head>
+<body class="light">
+    <nav class="m l top primary-container drawer">
+        <header></header>
+
+        <!-- <h3>APTLYWEB</h3> -->
+                
+            <!-- <img src="{% static 'aptlyweb/images/UI_Logo.png' %}" alt="Small Logo" style="height: 60%;"> -->
+        <a href="{% url 'home' %}" class="button small-round large transparent l">
+            <i>home</i>
+            <span>Home</span>
+        </a>
+        
+        <a href="{% url 'published' %}" class="button small-round large transparent l">
+            <i>database</i>
+            <span>Published</span>
+        </a>
+        
+        <a href="{% url 'repositories' %}" class="button small-round large transparent l">
+            <i>folder</i>
+            <span>Repositories</span>
+        </a>
+        
+        <a href="{% url 'snapshots' %}" class="button small-round large transparent l">
+            <i>photo_camera</i>
+            <span>Snapshots</span>
+        </a>
+        {% if user.is_authenticated %}
+        <div>
+            <span class="header-text">
+                Moin {{ user.username }}
+            </span>                
+        </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="button small-round"><span>Log Out</span></a>
+        {% else %}
+        <a href="{% url 'login' %}" class="button small-round"><span>Log In</span></a>
+        {% endif %}
+    </nav>
+    <main class="responsive">
+        {% block main-content %}{% endblock %}
+    </main>
+</body>
+</html>
+

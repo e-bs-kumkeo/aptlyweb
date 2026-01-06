@@ -1,0 +1,109 @@
+{% extends  'aptlyweb/template_display.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %} Snapshots · APTLYWEB {% endblock %}
+{% block extra_head %} {% endblock %}
+
+{% block h1 %} SNAPSHOTS {% endblock %}
+{% block h2 %}  {% endblock %}
+
+{% block display%}
+<div class="topic">
+    <div class="display"> 
+        <div class="operations">
+            {% if perms.aptlyweb.can_create_snapshots %} <a href="{% url 'snapshot_add' %}" class="button" title="create snapshot"><i>add</i>Create<i>photo_camera</i></a>{% endif %}
+        </div>
+        <br>
+        <table class="border">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Date</th>
+              {% if perms.aptlyweb.can_delete_snapshots or perms.aptlyweb.can_edit_snapshots %}
+              <th scope="col" style="width: 132px;"></th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for snap in snapshots %}
+            <tr>
+              <td>
+                <a href="{% url 'snapshot_detail' snap.name %}" class="link bold">{{ snap.name }}</a>
+              </td>
+              <td>{{ snap.description }}</td>
+              <td>{{ snap.created_at }}</td>
+              {% if perms.aptlyweb.can_delete_snapshots or perms.aptlyweb.can_edit_snapshots %}
+              <td style="text-align: right;">
+                {% if perms.aptlyweb.can_edit_snapshots %}
+                <a class="button circle transparent" href="{% url 'snapshot_edit' snapshot_name=snap.name %}" title="edit"><i>edit</i></a>
+                {% endif %}
+                {% if perms.aptlyweb.can_delete_snapshots %}
+                <button type="button" class="circle transparent" onclick="openDeleteModal('{{ snap.name }}')" title="delete"><i>delete</i></button>
+                {% endif %}
+              </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</div>
+<dialog id="deleteModal" class="modal" popover>
+  <h5>Delete Snapshot</h5>
+  <div style="margin-top: 16px;">
+    <div>
+      Confirm deletion of the <span id="span_name" style="font-weight: bold;">placeholder</span> snaphot
+    </div>
+    <form id="deleteModalForm" method="post" action="{% url 'snapshot_delete' %}" onsubmit="deleteFormSubmit(event)">
+      {% csrf_token %}
+
+      <input id="snapshot_name" name="snapshot_name" type="hidden">
+
+      <div class="field border label">
+        <input id="confirmation_name" name="confirmation_name" type="text">
+        <label for="confirmation_name">Type name again to confirm</label>
+      </div>
+
+      <nav class="right-align">
+        <button type="button" onclick="closeDeleteModal()">Cancel</button>
+        <button id="deleteSubmit" type="submit" class="error">Delete</button>
+      </nav>
+    </form>
+  </div>
+</dialog>
+<script>
+const modal = document.getElementById('deleteModal');
+
+function openDeleteModal(name){
+  modal.showPopover();
+
+  const name_input = document.getElementById('snapshot_name');
+  name_input.value = name;
+  const span_name = document.getElementById('span_name');
+  span_name.innerText = name;
+}
+function closeDeleteModal(){
+  modal.hidePopover();
+}
+
+// const form = document.getElementById('deleteModalForm');
+function deleteFormSubmit(e){
+  const name_input = document.getElementById('snapshot_name');
+  const confirm_input = document.getElementById('confirmation_name');
+
+  if(name_input.value === confirm_input.value)
+  {
+    confirm_input.parentNode.classList.remove("invalid");
+    return true
+  }
+  else {
+    confirm_input.parentNode.classList.add("invalid");
+    // do not handle event
+    e.preventDefault();
+  }
+}
+</script>
+{% endblock%}
+

@@ -1,0 +1,118 @@
+{% extends  'aptlyweb/template_display.html' %}
+{% load static %}
+{% load aptly_extras %}
+<!DOCTYPE html>
+
+{% block title %} Published · APTLYWEB {% endblock %}
+
+{% block h1 %} Available APT Repos {% endblock %}
+{% block h2 %} {% endblock %}
+
+{% block display%}
+<div class="topic">
+  <div class="display"> 
+    <div class="operations">
+      {% if perms.aptlyweb.can_create_APT_repositories %} 
+      <a href="{% url 'published_add' %}?source_kind=local" class="button" title="publish local repositories"><i>add</i>Publish Local Repositories<i>folder</i></a>
+      <a href="{% url 'published_add' %}?source_kind=snapshot" class="button" title="publish snapshots"><i>add</i>Publish Snapshot<i>photo_camera</i></a>
+      {% endif %}
+    </div>
+    <br>
+    <table class="border">
+      <thead>
+        <tr>
+          <th scope="col">Endpoint</th>
+          <th scope="col">Distribution</th>
+          <th scope="col">Source</th>
+          {% if perms.aptlyweb.can_delete_APT_repositories or perms.aptlyweb.can_create_APT_repositories %}
+          <th scope="col" style="width: 132px;"></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for endpoint in endpoints %}
+        {% with escaped_prefix=endpoint.prefix|escape_prefix %}
+        <tr>
+          <td>
+            <a href="{% url 'published_detail' prefix=escaped_prefix distribution=endpoint.distribution %}" class="link bold">{{ endpoint.prefix }}</a>
+          </td>
+          <td>{{ endpoint.distribution }}</td>
+          <td>{{ endpoint.source_kind }}: {% for src in endpoint.sources %} "{{ src.Name }}"{% if not forloop.last %},{% endif %}{% empty %}{% endfor %}</td>
+          {% if perms.aptlyweb.can_delete_APT_repositories or perms.aptlyweb.can_create_APT_repositories %}
+          <td style="text-align: right;">
+            {% if perms.aptlyweb.can_create_APT_repositories and endpoint.source_kind == "local" %}
+            <a class="button circle transparent" href="{% url 'published_update' prefix=escaped_prefix distribution=endpoint.distribution %}" title="Update published local Repository"><i>refresh</i></a>
+            {% endif %}
+            {% if perms.aptlyweb.can_delete_APT_repositories %}
+            <button type="button" class="circle transparent" onclick="openDeleteModal('{{ endpoint.prefix }}', '{{ endpoint.distribution }}')" title="delete"><i>delete</i></button>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% endwith %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<dialog id="deleteModal" class="modal" popover>
+  <h5>Delete Published Repository</h5>
+  <div style="margin-top: 16px;">
+    <div>
+      Confirm deletion of the <span id="span_name" style="font-weight: bold;">placeholder</span> published repository
+    </div>
+    <form id="deleteModalForm" method="post" action="{% url 'published_delete' %}" onsubmit="deleteFormSubmit(event)">
+      {% csrf_token %}
+      
+      <input id="repo_endpoint" name="prefix" type="hidden">
+      <input id="repo_dist" name="distribution" type="hidden">
+      
+      <div class="field border label">
+        <input id="confirmation_name" name="confirmation_name" type="text">
+        <label for="confirmation_name">Type name again to confirm</label>
+      </div>
+      
+      <nav class="right-align">
+        <button type="button" onclick="closeDeleteModal()">Cancel</button>
+        <button id="deleteSubmit" type="submit" class="error">Delete</button>
+      </nav>
+    </form>
+  </div>
+</dialog>
+<script>
+  const modal = document.getElementById('deleteModal');
+  
+  function openDeleteModal(prefix, distribution){
+    modal.showPopover();
+        
+  const ep_input = document.getElementById('repo_endpoint');
+  ep_input.value = prefix;
+  const dist_input = document.getElementById('repo_dist');
+  dist_input.value = distribution;
+  
+  const span_name = document.getElementById('span_name');
+  span_name.innerText = `${prefix}/${distribution}`;
+}
+function closeDeleteModal(){
+  modal.hidePopover();
+}
+
+// const form = document.getElementById('deleteModalForm');
+function deleteFormSubmit(e){
+  const ep_input = document.getElementById('repo_endpoint');
+  const dist_input = document.getElementById('repo_dist');  
+  const confirm_input = document.getElementById('confirmation_name');
+
+  if(confirm_input.value === `${ep_input.value}/${dist_input.value}`)
+  {
+    confirm_input.parentNode.classList.remove("invalid");
+    return true
+  }
+  else {
+    confirm_input.parentNode.classList.add("invalid");
+    // do not handle event
+    e.preventDefault();
+  }
+}
+</script>
+{% endblock%}

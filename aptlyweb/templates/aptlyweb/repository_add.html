@@ -1,0 +1,21 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+
+{% block title %}ADD · APTLYWEB{% endblock %}
+{% block h1 %} Create Repository {% endblock %}
+{% block overview-tables %}{% endblock %}
+{% block display%}
+
+<section class="topic">
+  <div>
+    <form action="" method="POST" novalidate id="create_repo_form">
+      {% csrf_token %}
+      {% include 'aptlyweb/material_forms/form.html' with form=form %}
+      <nav class="right-align">
+        <a class="button" href="{% url 'repositories' %}">Cancel</a>
+        <button type="submit">Submit</button>
+      </nav>
+    </form>
+  </div>
+</section>
+{% endblock %}

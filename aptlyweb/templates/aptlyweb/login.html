@@ -1,0 +1,23 @@
+{% extends 'aptlyweb/template_display.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %}Login{% endblock %}
+{% block h1 %} Login Page{% endblock %}
+
+{% block display%}
+<div class="login-overview">
+  <div class="topic">
+    <strong>LOGIN</strong>
+    <br>
+    <form class="pattern-triangle" action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% include 'aptlyweb/material_forms/form.html' with form=form %}
+      <br>
+      <nav class="right-align">
+        <button class="display-button--spec submit pattern-circle" name="login_submit">Submit</button>
+      </nav>
+    </form>
+  </div>
+</div>
+{% endblock %}

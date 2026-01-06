@@ -1,0 +1,28 @@
+{% extends  'aptlyweb/template_detail.html' %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block title %} Detail · {{ repository.name }} {% endblock %}
+
+{% block h1 %} 
+<h5 class="max center-align">Repository - {{repository.name}}</h5> 
+{% if perms.aptlyweb.can_upload_repos %}
+<a class="button extra transparent" href="{% url 'repository_upload' repository_name=repository.name %}"><i>upload</i>Upload</a>
+{% endif %}
+{% if perms.aptlyweb.can_edit_repos %}
+<a class="button extra transparent" href="{% url 'repository_edit' repository_name=repository.name %}"><i>edit</i>Edit</a>
+{% endif %}
+{% endblock %}
+
+{% block specific-detail %}
+    <p><strong>Name:</strong> {{ repository.name }}</p>
+    <p><strong>Comment:</strong> {{ repository.comment }}</p>
+    <p><strong>Component:</strong> {{ repository.default_component }}</p>
+    <p><strong>Distribution:</strong> {{ repository.default_distribution }}</p>
+{% endblock %}
+
+
+
+
+
+
