@@ -46,6 +46,8 @@ services:
 ```
 2. Create the `.env` file, see `.env.example` or [settings below](#settings)
 ```sh
+# URL under with AptlyWeb is reachable. Must include the protocoll (http/https)
+APTLYWEB_URLS=http://aptlyweb.test
 # URL under which the hosted APT repos will be available 
 APTLY_URL=http://apt.mydomain.net
 # URL where aptly REST API is reachable
@@ -68,7 +70,7 @@ Avaible options via environment variables
 
 | Name                    | Required | Value      | Description                                                                          |
 | ----------------------- | -------- | ---------- | ------------------------------------------------------------------------------------ |
-| APTLYWEB_URLs           | yes      |            | URL under with AptlyWeb is reachable. Must include the protocoll (http/https)        |
+| APTLYWEB_URLS           | yes      |            | URL under with AptlyWeb is reachable. Must include the protocoll (http/https)        |
 | APTLY_URL               | yes      |            | URL where the published repositories are accessible, including http(s) part          |
 | APTLY_API_URL           | yes      |            | URL to the Aptly API, including http(s) part                                         |
 | APTLY_API_SKIP_SSL      |          | TRUE/FALSE | Skip the certificate validation for the API (use with self signed certificates)      |
