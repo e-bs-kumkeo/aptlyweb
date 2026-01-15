@@ -47,7 +47,7 @@ if aptlyweb_urls:
     adresses = map(str.strip, aptlyweb_urls.split(","))
     for adr in adresses:
         parsed = urlparse(adr)
-        allowed.append(parsed.netloc) # hostname + port
+        allowed.append(parsed.hostname) # hostname
         trusted.append(adr) # schema + hostname + port
     ALLOWED_HOSTS = allowed
     CSRF_TRUSTED_ORIGINS = trusted
