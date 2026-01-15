@@ -1,4 +1,4 @@
-http://localhost:8001 {
+:8001 {
 	# Serve static files from staticfiles directory
 	handle_path /static/* {
 		root * ./staticfiles/
