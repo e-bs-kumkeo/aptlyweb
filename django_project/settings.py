@@ -12,18 +12,18 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 # helper to convert string to bool
 def strtobool(value: str) -> bool:
     value = value.lower()
-    if value in ("y", "yes", "on", "1", "true", "t"):
+    if value in ("y", "yes", "on", "1", "true", "t", "TRUE", "True"):
         return True
     return False
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -35,9 +35,22 @@ SECRET_KEY = os.getenv('DJANGO_SECRET','insecure')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(strtobool(os.getenv("DEBUG", "false")))
 
+# We need the adress(es) where AptlyWeb is hosted to mitigate CSRF attacks
 # https://docs.djangoproject.com/en/5.2/ref/settings/#std:setting-ALLOWED_HOSTS
-allowed_hosts = os.getenv("ALLOWED_HOSTS", ".localhost,127.0.0.1,[::1]")
-ALLOWED_HOSTS = list(map(str.strip, allowed_hosts.split(",")))
+# https://docs.djangoproject.com/en/5.2/ref/settings/#csrf-trusted-origins
+aptlyweb_urls =  os.getenv("APTLYWEB_URLS", None)
+    
+if aptlyweb_urls:
+    allowed = list()
+    trusted = list()
+
+    adresses = map(str.strip, aptlyweb_urls.split(","))
+    for adr in adresses:
+        parsed = urlparse(adr)
+        allowed.append(parsed.netloc) # hostname + port
+        trusted.append(adr) # schema + hostname + port
+    ALLOWED_HOSTS = allowed
+    CSRF_TRUSTED_ORIGINS = trusted
 
 # Application definition
 
